@@ -113,7 +113,4 @@ for regions in regionprops(labelled_plate):
         column_list.append(x0)
 plt.show()
 
-for i in range(len(characters)):
-    fig, (ax1) = plt.subplots(1)
-    ax1.imshow(characters[i], cmap="gray");
-print(column_list)
+
