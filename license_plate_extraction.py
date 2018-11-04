@@ -22,7 +22,7 @@ class extraction():
     def __init__(self):
         pass
     
-    def store_license_plate(image_path):
+    def store_license_plate(image_path,save_path):
 
 
 
@@ -103,7 +103,7 @@ class extraction():
         license_plate= resize(license_plate, (161, 314))       
         
         
-        io.imsave('c:\\ec601\\results\\licenseplate1.png',license_plate)
+        io.imsave(save_path,license_plate)
     
     def time_extraction(file_path):
         
