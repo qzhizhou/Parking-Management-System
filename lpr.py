@@ -12,10 +12,12 @@ from skimage.measure import regionprops
 import matplotlib.patches as patches
 import numpy as np
 from skimage.transform import resize
-from PIL import Image
+from skimage import io
 
 
-car_image = imread("car6.jpg", as_grey=True)
+image_path = "c:\\ec601\\cars\\car6.jpg"
+car_image = imread(image_path, as_grey=True)
+original = imread(image_path, as_grey=False)
 # it should be a 2 dimensional array
 print(car_image.shape)
 
@@ -34,7 +36,7 @@ plt.show()
 label_image = measure.label(binary_car_image)
 
 # getting the maximum width, height and minimum width and height that a license plate can be
-plate_dimensions = (0.06*label_image.shape[0], 0.2*label_image.shape[0], 0.15*label_image.shape[1], 0.4*label_image.shape[1])
+plate_dimensions = (0.04*label_image.shape[0], 0.2*label_image.shape[0], 0.1*label_image.shape[1], 0.4*label_image.shape[1])
 min_height, max_height, min_width, max_width = plate_dimensions
 plate_objects_cordinates = []
 plate_like_objects = []
@@ -55,17 +57,19 @@ for region in regionprops(label_image):
     if region_height >= min_height and region_height <= max_height and region_width >= min_width and region_width <= max_width and region_width > region_height:
         plate_like_objects.append(binary_car_image[min_row:max_row,
                                   min_col:max_col])
-        plate_objects_cordinates.append((min_row, min_col,
-                                              max_row, max_col))
+        plate_objects_cordinates.append([min_row, min_col,
+                                              max_row, max_col])
         rectBorder = patches.Rectangle((min_col, min_row), max_col-min_col, max_row-min_row, edgecolor="red", linewidth=2, fill=False)
         ax1.add_patch(rectBorder)
     # let's draw a red rectangle over those regions
 plt.show()
 
+# we use the same method to segment each character in each candidate, if we can label more than five characters, it should be the license plate.
+count = 0
 for each_candidate in plate_like_objects:
     each_candidate = np.invert(each_candidate)
     labelled_candidate = measure.label(each_candidate)
-    character_dimensions = (0.35*each_candidate.shape[0], 0.7*each_candidate.shape[0], 0.02*each_candidate.shape[1], 0.11*each_candidate.shape[1])
+    character_dimensions = (0.1*each_candidate.shape[0], 0.9*each_candidate.shape[0], 0.02*each_candidate.shape[1], 0.2*each_candidate.shape[1])
     min_height, max_height, min_width, max_width = character_dimensions
     characters = []
     for regions in regionprops(labelled_candidate):
@@ -78,39 +82,17 @@ for each_candidate in plate_like_objects:
              resized_char = resize(roi, (20, 20))
              characters.append(resized_char)
     if len(characters) > 5:
-        license_plate = each_candidate
         break
+    count +=1
+y0 = plate_objects_cordinates[count][0]
+x0 = plate_objects_cordinates[count][1]
+y1 = plate_objects_cordinates[count][2]
+x1 = plate_objects_cordinates[count][3]
+license_plate=original[y0:y1, x0:x1]  
+license_plate= resize(license_plate, (161, 314))       
 
-fig, (ax1) = plt.subplots(1)
-ax1.imshow(license_plate, cmap="gray")
-plt.savefig('license_plate.jpg')
 
+io.imsave('c:\\ec601\\results\\licenseplate1.png',license_plate)
 
-labelled_plate = measure.label(license_plate)
-character_dimensions = (0.35*license_plate.shape[0], 0.7*license_plate.shape[0], 0.025*license_plate.shape[1], 0.11*license_plate.shape[1])
-min_height, max_height, min_width, max_width = character_dimensions
-characters = []
-counter=0
-column_list = []
-for regions in regionprops(labelled_plate):
-    y0, x0, y1, x1 = regions.bbox
-    region_height = y1 - y0
-    region_width = x1 - x0
-
-    if region_height > min_height and region_height < max_height and region_width > min_width and region_width < max_width:
-        roi = license_plate[y0:y1, x0:x1]
-
-        # draw a red bordered rectangle over the character.
-        rect_border = patches.Rectangle((x0, y0), x1 - x0, y1 - y0, edgecolor="red",
-                                       linewidth=2, fill=False)
-        ax1.add_patch(rect_border)
-
-        # resize the characters to 20X20 and then append each character into the characters list
-        resized_char = resize(roi, (20, 20))
-        characters.append(resized_char)
-
-        # this is just to keep track of the arrangement of the characters
-        column_list.append(x0)
-plt.show()
 
 
