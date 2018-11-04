@@ -5,5 +5,5 @@ This is to build a system that can self detect the car plates and calculate the 
 
     pip install -r requirements.txt 
 
-## Second run lpr.py program
-    python lpr.py
+## Second run main.py program
+    python main.py
