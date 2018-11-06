@@ -1,0 +1,17 @@
+There are 3 tables in the database "SMARTPARKER"
+
+1.cars_in
+which means at the moment, all cars in the parking lot will be in this table
+
+2.cars_memo
+I use this table to load the balance money of the specific car. And also, 
+due to the unrepeatablility, whether or not
+the car has been in this parking lot will be decided using this table.
+
+3.cars_all
+which records all cars in history has come in and come out. 
+Every single action will be recorded in this table.
+Also, the picture (as a proof) will be recorded as a image path in this table.
+
+The program will straightly read information from the table "cars_in"
+The program will load everything to the table "cars_all"
