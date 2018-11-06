@@ -15,3 +15,29 @@ Also, the picture (as a proof) will be recorded as a image path in this table.
 
 The program will straightly read information from the table "cars_in"
 The program will load everything to the table "cars_all"
+
+
+CREATE TABLE `cars_all` (
+  `license_id` varchar(30) NOT NULL,
+  `entry_time` datetime DEFAULT NULL,
+  `exit_time` datetime DEFAULT NULL,
+  `money` float DEFAULT NULL,
+  `image_path` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`license_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+
+CREATE TABLE `cars_in` (
+  `license_id` varchar(30) NOT NULL,
+  `entry_time` datetime DEFAULT NULL,
+  `balance` float DEFAULT NULL,
+  `images_path` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`license_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+
+CREATE TABLE `cars_memo` (
+  `license_id` varchar(40) NOT NULL,
+  `balance` float DEFAULT NULL,
+  PRIMARY KEY (`license_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
