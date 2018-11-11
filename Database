@@ -54,3 +54,80 @@ CREATE TABLE `cars_balance` (
   `balance` float DEFAULT NULL,
   PRIMARY KEY (`license_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+
+
+from license_image_extraction import extraction
+from recognize_license_id import *
+import pymysql
+import pymysql
+'''
+import pandas as pd
+import numpy as np
+import MySQLdb'''
+
+car_path = "/Users/gangwei/Desktop/smartparker/car_image/car6.jpg"
+license_plate_path = '/Users/gangwei/Desktop/smartparker/license_image'
+json_path = "/Users/gangwei/Desktop/smartparker/textdetect-52e8d68b62cc.json"
+
+entry_time = extraction.time_extraction(car_path)
+
+print(entry_time)
+#extraction.store_license_plate(car_path,license_plate_path)
+
+license_id = text.recognize(license_plate_path,json_path)
+print(license_id)
+# !/usr/bin/python3
+balance = 300
+
+# 打开数据库连接
+db = pymysql.connect("localhost", "root", "WeiGang0502", "smartparker")
+
+# 使用cursor()方法获取操作游标
+cursor = db.cursor()
+
+# SQL 插入语句
+#sql = """INSERT INTO cars_all(license_id,entry_time, balance)
+#       values("%s", "%s"，"%s")""" % (license_id, entry_time, balance)
+
+sql = "INSERT INTO cars_all(license_id, entry_time, balance) VALUES(\'%s\', \'%s\', \'%s\')" % (license_id, entry_time,  balance)
+
+
+#try:
+    # 执行sql语句
+cursor.execute(sql)
+    # 提交到数据库执行
+db.commit()
+
+#except:
+    # 如果发生错误则回滚
+    #db.rollback()
+
+# 关闭数据库连接
+#db.close()
+
+'''
+
+
+only add:           cars_all license_id entry exit balance path
+add or delete:      cars_in  license_id entry balance
+only update:        cars_bal license_id entry exit balance(initial = 300)
+
+car comes in: if not exist, txt, entry send to .bal,add
+              if exist, update entry; null exit
+              
+              txt, time and path send to .all, add; txt, time send to .in, add;
+              
+car out :      update exit; cost send to .bal; balance -= cost
+              
+              txt, time and path send to .all, add; txt send to .in, delete;
+
+where in.id == bal.id , set in.balance = bal.balance
+where in.id == all.id && in.entry == all.entry , set in.path = all.path
+where all.entry == bal.entry , set all.balance = bal.balance
+
+
+
+
+
+'''
