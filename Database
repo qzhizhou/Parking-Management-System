@@ -23,18 +23,15 @@ The program will load everything to the table "cars_all"
 
 
 CREATE TABLE `cars_all` (
+  `No.` int(11) NOT NULL AUTO_INCREMENT,
   `license_id` varchar(30) NOT NULL,
-  `entry_time` timestamp(1) NOT NULL,
+  `entry_time` timestamp(1) NULL DEFAULT NULL,
   `exit_time` timestamp(1) NULL DEFAULT NULL,
   `balance` float DEFAULT NULL,
   `image_path` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`entry_time`,`license_id`),
-  KEY `license_id_idx` (`balance`),
-  KEY `entry_time_idx` (`entry_time`),
-  KEY `license_id` (`license_id`),
-  CONSTRAINT `license_id` FOREIGN KEY (`license_id`) REFERENCES `cars_balance` (`license_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
-
+  PRIMARY KEY (`No.`,`license_id`),
+  KEY `license_id_idx` (`No.`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 
 CREATE TABLE `cars_in` (
   `license_id` varchar(30) NOT NULL,
@@ -43,11 +40,8 @@ CREATE TABLE `cars_in` (
   `images_path` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`license_id`),
   KEY `license_id_idx` (`license_id`,`balance`),
-  KEY `balance_idx` (`balance`),
-  KEY `entry_time_idx` (`entry_time`),
-  CONSTRAINT `entry_time` FOREIGN KEY (`entry_time`) REFERENCES `cars_all` (`entry_time`)
+  KEY `balance_idx` (`balance`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
-
 
 CREATE TABLE `cars_balance` (
   `license_id` varchar(30) NOT NULL,
@@ -55,65 +49,3 @@ CREATE TABLE `cars_balance` (
   PRIMARY KEY (`license_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 
-
-from license_image_extraction import extraction
-from recognize_license_id import *
-import pymysql
-import pymysql
-
-'''
-import pandas as pd
-import numpy as np
-import MySQLdb'''
-
-car_path = "/Users/gangwei/Desktop/smartparker/car_image/car66.jpg"
-license_plate_path = '/Users/gangwei/Desktop/smartparker/license_image'
-json_path = "/Users/gangwei/Desktop/smartparker/textdetect-52e8d68b62cc.json"
-
-entry_time = extraction.time_extraction(car_path)
-
-print(entry_time)
-# extraction.store_license_plate(car_path,license_plate_path)
-
-license_id = text.recognize(license_plate_path, json_path)
-print(license_id)
-
-balance = 300
-
-def cars_all():
-    
-    db = pymysql.connect("localhost", "root", "WeiGang0502", "smartparker")
-    cursor = db.cursor()
-    sql = "INSERT INTO cars_all(license_id, entry_time, balance) VALUES(\'%s\', \'%s\', \'%s\')" % (
-        license_id, entry_time, balance)
-
-    try:
-        cursor.execute(sql)
-        db.commit()
-    except:
-        db.rollback()
-        db.close()
-
-def cars_in():
-    db = pymysql.connect("localhost", "root", "WeiGang0502", "smartparker")
-    cursor = db.cursor()
-    sql = "INSERT INTO cars_all(license_id, entry_time, balance) VALUES(\'%s\', \'%s\', \'%s\')" % (
-        license_id, entry_time, balance)
-    try:
-        cursor.execute(sql)
-        db.commit()
-    except:
-        db.rollback()
-        db.close()
-
-def cars_balance():
-    db = pymysql.connect("localhost", "root", "WeiGang0502", "smartparker")
-    cursor = db.cursor()
-    sql = "INSERT INTO cars_all(license_id, balance) VALUES(\'%s\', \'%s\')" % (
-        license_id, balance)
-    try:
-        cursor.execute(sql)
-        db.commit()
-    except:
-        db.rollback()
-        db.close()
