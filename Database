@@ -27,20 +27,16 @@ CREATE TABLE `cars_all` (
   `license_id` varchar(30) NOT NULL,
   `entry_time` timestamp(1) NULL DEFAULT NULL,
   `exit_time` timestamp(1) NULL DEFAULT NULL,
-  `balance` float DEFAULT NULL,
   `image_path` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`No.`,`license_id`),
   KEY `license_id_idx` (`No.`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 
 CREATE TABLE `cars_in` (
   `license_id` varchar(30) NOT NULL,
   `entry_time` timestamp(1) NULL DEFAULT NULL,
-  `balance` float DEFAULT NULL,
-  `images_path` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`license_id`),
-  KEY `license_id_idx` (`license_id`,`balance`),
-  KEY `balance_idx` (`balance`)
+  KEY `license_id_idx` (`license_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 CREATE TABLE `cars_balance` (
@@ -48,4 +44,3 @@ CREATE TABLE `cars_balance` (
   `balance` float DEFAULT NULL,
   PRIMARY KEY (`license_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
-
