@@ -1,5 +1,5 @@
-from license_image_extraction import extraction
-from recognize_license_id import *
+from license_plate_extraction import extraction
+from googlevision import *
 import pymysql
 import pymysql
 
