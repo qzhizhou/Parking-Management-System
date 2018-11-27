@@ -99,11 +99,10 @@ def out_cars_balance():
     cursor = db.cursor()
 
 def query_all():
-    input = input()
+    ld = input("Please enter the license id you want to check:")
     db = pymysql.connect("localhost", "root", "WeiGang0502", "smartparker")
     cursor = db.cursor()
-    # l_id = input("The license you want to find is: ")
-    sql = "SELECT * FROM cars_all WHERE LICENSE_ID = '%s'" %(input)
+    sql = "SELECT * FROM cars_all WHERE LICENSE_ID = '%s'" %(ld)
     try:
         cursor.execute(sql)
         results = cursor.fetchall()
@@ -120,10 +119,11 @@ def query_all():
     db.close()
 
 def query_balance():
+    ld = input("Please enter the license id you want to check:")
     db = pymysql.connect("localhost", "root", "WeiGang0502", "smartparker")
     cursor = db.cursor()
     # l_id = input("The license you want to find is: ")
-    sql = "SELECT * FROM cars_balance WHERE LICENSE_ID = '%s'" %(input)
+    sql = "SELECT * FROM cars_balance WHERE LICENSE_ID = '%s'" %(ld)
 
     try:
         cursor.execute(sql)
@@ -138,10 +138,11 @@ def query_balance():
     db.close()
 
 def query_in():
+    ld = input("Please enter the license id you want to check:")
     db = pymysql.connect("localhost", "root", "WeiGang0502", "smartparker")
     cursor = db.cursor()
     # l_id = input("The license you want to find is: ")
-    sql = "SELECT * FROM cars_in WHERE LICENSE_ID = '%s'" %(input)
+    sql = "SELECT * FROM cars_in WHERE LICENSE_ID = '%s'" %(ld)
 
     try:
         cursor.execute(sql)
