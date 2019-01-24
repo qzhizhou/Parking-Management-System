@@ -9,6 +9,6 @@ This is to build a system that can self detect the car plates and calculate the 
     python main.py
 
 ## What to do
-    You should enter your image path of the cars taken by cameras,(Entry & Exit), 
+    Enter your image path of the cars taken by cameras,(Entry & Exit), 
     your google_vision json path, and the storage path of the images of the license plate, 
     extracted by the program 'license-plate-extraction'.
